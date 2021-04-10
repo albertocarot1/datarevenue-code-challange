@@ -75,7 +75,7 @@ The final data set will have more than 100k rows.
 #### 4. EvaluateModel
 Here you can get creative! Pick a good metric and show your communication and presentation skills. Load your model and evaluate it on a held out part of the data set. This task should have a concrete outcome e.g. a zip of plots or even better a whole report (check the [pweave](http://mpastell.com/pweave/) package).
 
-**You will most likely need the output of this task to tell the client if the model is suited for his endavour. This should include a assesment of the quality of the model, and also the consequences of the errors that the model makes.**
+**You will most likely need the output of this task to tell the client if the model is suited for his endavour. This should include an assessment of the quality of the model, and also the consequences of the errors that the model makes.**
 
 #### Other requirements
 - Each task:

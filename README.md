@@ -14,7 +14,7 @@ The repository already comes with a leaf task implemented which will download th
 
 The goal of this challenge is to implement a complete machine learning pipeline. This pipeline should build a proof of concept machine learning model and evaluate it on a test data set.
 
-**An important part of this challenge is to assess and explain the model to a fictional client with limited statistical knowledge. So your evaluation should include some plots on how your model makes the predictions. Finally you need to give an essesment if it will make sense for the client to implement this model!**
+**An important part of this challenge is to assess and explain the model to a fictional client with limited statistical knowledge. So your evaluation should include some plots on how your model makes the predictions. Finally, you need to give an assessment if it will make sense for the client to implement this model!**
 
 ### Challenge
 To put things into the right perspective consider the following fictional scenario: 

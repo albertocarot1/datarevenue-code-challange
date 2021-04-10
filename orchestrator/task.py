@@ -29,7 +29,7 @@ class DownloadData(DockerTask):
     fname = luigi.Parameter(default='wine_dataset')
     out_dir = luigi.Parameter(default='/usr/share/data/raw/')
     url = luigi.Parameter(
-        default='https://github.com/datarevenue-berlin/code-challenge-2019/'
+        default='https://github.com/datarevenue-berlin/code-challenge-2020/'
                 'releases/download/0.1.0/dataset_sampled.csv'
     )
 

@@ -195,7 +195,7 @@ Feel free to create an issue! Discussions in issues are generally encouraged.
 The following artifacts/files are expected as deliverables
 
 - Your solution containing all files necessary to run it as a docker-compose project
-- Include a complete log of your local run of the complete pipeline
+- Include a complete log of your local run of the complete pipeline (the output from `docker-compose up orchestrator`)
 - Include your client facing rendered report such as a (executed) notebook, rendered pweave report, or pdf
 
 Please zip your solution including all files and send to us with

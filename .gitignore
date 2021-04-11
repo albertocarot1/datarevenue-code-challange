@@ -20,3 +20,6 @@ data_root/**/*.pickle
 data_root/**/*.pkl
 data_root/**/*.json
 data_root/**/*.parquet
+
+# local pyenv python version
+/.python-version

@@ -33,7 +33,6 @@ services:
     environment:
       - PROJECT_ROOT=$PWD
       - PIPELINE_VERSION=0.1
-      # TODO: Potentially adjust the network depending on your compose version!
       - ORCHESTRATOR_NETWORK=codechallenge2020_default
     volumes:
       - ./data_root:/usr/share/data/ # Mount data directory
@@ -41,5 +40,5 @@ services:
       - ./orchestrator:/opt/orchestrator # Mount code for faster development
     build:
       context: ./orchestrator
-    # TODO: Replace with EvaluateModel task
-    command: luigi --module task DownloadData --scheduler-host luigid
+    # TODO: Eventually replace with EvaluateModel task
+    command: luigi --module task MakeDatasets --scheduler-host luigid #--workers 4

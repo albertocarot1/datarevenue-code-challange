@@ -50,6 +50,9 @@ def make_datasets(in_csv, test_perc, out_dir):
     # we set the index so we can properly execute loc below
     df = df.set_index('Unnamed: 0')
 
+    # remove possible duplicates
+    df = df.drop_duplicates()
+
     # Get y so that train and test can be split equally
     y = df[['points']]
 

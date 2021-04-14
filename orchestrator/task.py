@@ -59,7 +59,7 @@ class MakeDatasets(DockerTask):
     """ Pipeline task that splits the dataset in train and test. """
 
     in_csv = luigi.Parameter(default="/usr/share/data/raw/wine_dataset.csv")
-    test_percentage = luigi.Parameter(default="30")
+    test_percentage = luigi.Parameter(default="20")
     out_dir = luigi.Parameter(default="/usr/share/data/split/")
 
 
@@ -74,9 +74,6 @@ class MakeDatasets(DockerTask):
 
     @property
     def command(self):
-        # TODO: implement correct command
-        # Try to get the input path from self.requires() ;)
-        print("before launching python script dataset.py")
         return [
             'python', 'dataset.py',
             '--in-csv', self.in_csv,

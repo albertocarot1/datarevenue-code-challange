@@ -16,6 +16,7 @@ pandas = "*"
 seaborn = "*"
 scikit-learn = "*"
 distributed = "*"
+category-encoders = "*"
 
 [requires]
 python_version = "3.6"

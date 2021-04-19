@@ -60,8 +60,8 @@ class MakeDatasets(DockerTask):
 
     in_csv = luigi.Parameter(default="/usr/share/data/raw/wine_dataset.csv")
     test_percentage = luigi.Parameter(default="20")
-    out_dir = luigi.Parameter(default="/usr/share/data/split/")
-
+    out_dir = luigi.Parameter(default="/usr/share/data/processed/")
+    drop_duplicates = luigi.Parameter(default='true')
 
     @property
     def image(self):
@@ -78,7 +78,8 @@ class MakeDatasets(DockerTask):
             'python', 'dataset.py',
             '--in-csv', self.in_csv,
             '--test-perc', self.test_percentage,
-            '--out-dir', self.out_dir
+            '--out-dir', self.out_dir,
+            '--drop-duplicates', self.drop_duplicates
         ]
 
     def output(self):
@@ -86,68 +87,68 @@ class MakeDatasets(DockerTask):
             path=str(Path(self.out_dir) / '.SUCCESS')
         )
 
-class TrainModel(DockerTask):
-    # TODO execute here click script that trains the model, and saves it to
-    # a binary file. Indicate as output, the location of the model file (or folder)
-
-    in_csv = luigi.Parameter()
-    test_percentage = luigi.Parameter(default=30)
-    out_dir = luigi.Parameter(default="/usr/share/data/split/")
-
-
-    @property
-    def image(self):
-        return f'code-challenge/make-dataset:{VERSION}'
-
-    def requires(self):
-        self.in_csv = DownloadData()
-        return self.in_csv
-
-    @property
-    def command(self):
-        # TODO: implement correct command
-        # Try to get the input path from self.requires() ;)
-        return [
-            'python', 'dataset.py',
-            '--in-csv', self.in_csv,
-            '--test-perc', self.test_percentage,
-            '--out-dir', self.out_dir
-        ]
-
-    def output(self):
-        return luigi.LocalTarget(
-            path=str(Path(self.out_dir) / '.SUCCESS')
-        )
-
-class EvaluateModel(DockerTask):
-    # TODO execute here click script that evaluates the model, and creates
-    # a report through notebooks. Write in README documentation where the report
-    # will be found
-    in_csv = luigi.Parameter()
-    test_percentage = luigi.Parameter(default=30)
-    out_dir = luigi.Parameter(default="/usr/share/data/split/")
-
-
-    @property
-    def image(self):
-        return f'code-challenge/make-dataset:{VERSION}'
-
-    def requires(self):
-        self.in_csv = DownloadData()
-        return self.in_csv
-
-    @property
-    def command(self):
-        # TODO: implement correct command
-        # Try to get the input path from self.requires() ;)
-        return [
-            'python', 'dataset.py',
-            '--in-csv', self.in_csv,
-            '--test-perc', self.test_percentage,
-            '--out-dir', self.out_dir
-        ]
-
-    def output(self):
-        return luigi.LocalTarget(
-            path=str(Path(self.out_dir) / '.SUCCESS')
-        )
+# class TrainModel(DockerTask):
+#     # TODO execute here click script that trains the model, and saves it to
+#     # a binary file. Indicate as output, the location of the model file (or folder)
+#
+#     in_csv = luigi.Parameter()
+#     test_percentage = luigi.Parameter(default=30)
+#     out_dir = luigi.Parameter(default="/usr/share/data/split/")
+#
+#
+#     @property
+#     def image(self):
+#         return f'code-challenge/make-dataset:{VERSION}'
+#
+#     def requires(self):
+#         self.in_csv = DownloadData()
+#         return self.in_csv
+#
+#     @property
+#     def command(self):
+#         # TODO: implement correct command
+#         # Try to get the input path from self.requires() ;)
+#         return [
+#             'python', 'dataset.py',
+#             '--in-csv', self.in_csv,
+#             '--test-perc', self.test_percentage,
+#             '--out-dir', self.out_dir
+#         ]
+#
+#     def output(self):
+#         return luigi.LocalTarget(
+#             path=str(Path(self.out_dir) / '.SUCCESS')
+#         )
+#
+# class EvaluateModel(DockerTask):
+#     # TODO execute here click script that evaluates the model, and creates
+#     # a report through notebooks. Write in README documentation where the report
+#     # will be found
+#     in_csv = luigi.Parameter()
+#     test_percentage = luigi.Parameter(default=30)
+#     out_dir = luigi.Parameter(default="/usr/share/data/split/")
+#
+#
+#     @property
+#     def image(self):
+#         return f'code-challenge/make-dataset:{VERSION}'
+#
+#     def requires(self):
+#         self.in_csv = DownloadData()
+#         return self.in_csv
+#
+#     @property
+#     def command(self):
+#         # TODO: implement correct command
+#         # Try to get the input path from self.requires() ;)
+#         return [
+#             'python', 'dataset.py',
+#             '--in-csv', self.in_csv,
+#             '--test-perc', self.test_percentage,
+#             '--out-dir', self.out_dir
+#         ]
+#
+#     def output(self):
+#         return luigi.LocalTarget(
+#             path=str(Path(self.out_dir) / '.SUCCESS')
+#         )

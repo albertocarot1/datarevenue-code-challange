@@ -1,4 +1,5 @@
 import math
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -12,9 +13,23 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 
 
-def _save_datasets(train, test, outdir: Path):
-    """Save data sets into nice directory structure and write SUCCESS flag."""
+def _save_datasets(train: DataFrame, test: DataFrame, outdir: Path):
+    """
+    Save data sets into nice directory structure, along with SUCCESS flag.
+
+    Parameters
+    ----------
+    train: DataFrame
+        Train split dataframe
+    test: DataFrame
+        Test split dataframe
+    outdir: str
+        directory where to save the csv files. They will be called 'train.csv'
+        and 'test.csv'
+    """
     flag = outdir / '.SUCCESS'
+
+    os.makedirs(os.path.dirname(outdir), exist_ok=True)
 
     out_train = outdir / 'train.csv'
     out_test = outdir / 'test.csv'
@@ -504,6 +519,26 @@ class DatasetProcessor:
 @click.option('--out-dir')
 @click.option('--drop-duplicates')
 def make_datasets(in_csv, test_perc, out_dir, drop_duplicates):
+    """
+    Split the wine dataset in train and test, and use the first one to teach
+    the data processor how to transform the data in a way that it can be used
+    with the chosen model.
+    Then transform the two splits, so that they can be used to train, and
+    successively validate, the wine rating prediction model.
+
+    Parameters
+    ----------
+    in_csv: str
+        Path to csv file that contains the wine dataset.
+    test_perc: int
+        Percentage of the data set to hold out for final validation (e.g. 10)
+    out_dir: str
+        Directory where the two processed data splits will be saved.
+    drop_duplicates: str
+        Whether duplicates in the datset should be dropped or not.
+        This is transformed in bool, but is expected as str due to cli.
+
+    """
     assert drop_duplicates in ['true', 'false']
     drop_duplicates = True if drop_duplicates == 'true' else False
     out_dir = Path(out_dir)

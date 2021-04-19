@@ -1,8 +1,7 @@
-import logging
-
-import luigi
 import os
 from pathlib import Path
+
+import luigi
 
 from util import DockerTask
 
@@ -51,12 +50,15 @@ class DownloadData(DockerTask):
         out_dir.mkdir(parents=True, exist_ok=True)
 
         return luigi.LocalTarget(
-            path=str(out_dir/f'{self.fname}.csv')
+            path=str(out_dir / f'{self.fname}.csv')
         )
 
 
 class MakeDatasets(DockerTask):
-    """ Pipeline task that splits the dataset in train and test. """
+    """
+    Pipeline task that splits the dataset in train and test,
+    and processes it for training and evaluation.
+    """
 
     in_csv = luigi.Parameter(default="/usr/share/data/raw/wine_dataset.csv")
     test_percentage = luigi.Parameter(default="20")
@@ -87,38 +89,40 @@ class MakeDatasets(DockerTask):
             path=str(Path(self.out_dir) / '.SUCCESS')
         )
 
-# class TrainModel(DockerTask):
-#     # TODO execute here click script that trains the model, and saves it to
-#     # a binary file. Indicate as output, the location of the model file (or folder)
-#
-#     in_csv = luigi.Parameter()
-#     test_percentage = luigi.Parameter(default=30)
-#     out_dir = luigi.Parameter(default="/usr/share/data/split/")
-#
-#
-#     @property
-#     def image(self):
-#         return f'code-challenge/make-dataset:{VERSION}'
-#
-#     def requires(self):
-#         self.in_csv = DownloadData()
-#         return self.in_csv
-#
-#     @property
-#     def command(self):
-#         # TODO: implement correct command
-#         # Try to get the input path from self.requires() ;)
-#         return [
-#             'python', 'dataset.py',
-#             '--in-csv', self.in_csv,
-#             '--test-perc', self.test_percentage,
-#             '--out-dir', self.out_dir
-#         ]
-#
-#     def output(self):
-#         return luigi.LocalTarget(
-#             path=str(Path(self.out_dir) / '.SUCCESS')
-#         )
+
+class TrainModel(DockerTask):
+    """
+    This task trains the model with the previously created train set, and saves
+    it in a file.
+    """
+
+    train_set_path = luigi.Parameter(
+        default="/usr/share/data/processed/train.csv")
+    model_out_file = luigi.Parameter(
+        default="/usr/share/data/models/xgbr.model")
+
+    @property
+    def image(self):
+        return f'code-challenge/train-model:{VERSION}'
+
+    def requires(self):
+        completed_task = MakeDatasets()
+        datasets_folder = os.path.dirname(completed_task.output().path)
+        self.train_set_path = os.path.join(datasets_folder, 'train.csv')
+        return completed_task
+
+    @property
+    def command(self):
+        return [
+            'python', 'train_model.py',
+            '--train-set-path', self.train_set_path,
+            '--model-out-file', self.model_out_file
+        ]
+
+    def output(self):
+        return luigi.LocalTarget(
+            path=str(Path(self.model_out_file))
+        )
 #
 # class EvaluateModel(DockerTask):
 #     # TODO execute here click script that evaluates the model, and creates

@@ -514,33 +514,19 @@ class DatasetProcessor:
 
 
 @click.command()
-@click.option('--in-csv')
-@click.option('--test-perc', type=int)
-@click.option('--out-dir')
-@click.option('--drop-duplicates')
+@click.option('--in-csv', required=True, help='Path to csv file that contains the wine dataset.')
+@click.option('--test-perc',required=True, type=int, help='Percentage of the data set to hold out for final validation', default=10)
+@click.option('--out-dir',required=True, help='Directory where the two processed data splits will be saved.')
+@click.option('--drop-duplicates', is_flag=True, help='Whether duplicates in the datset should be dropped or not.')
 def make_datasets(in_csv, test_perc, out_dir, drop_duplicates):
     """
     Split the wine dataset in train and test, and use the first one to teach
-    the data processor how to transform the data in a way that it can be used
+    a data processor how to transform the data in a way that it can be used
     with the chosen model.
+
     Then transform the two splits, so that they can be used to train, and
     successively validate, the wine rating prediction model.
-
-    Parameters
-    ----------
-    in_csv: str
-        Path to csv file that contains the wine dataset.
-    test_perc: int
-        Percentage of the data set to hold out for final validation (e.g. 10)
-    out_dir: str
-        Directory where the two processed data splits will be saved.
-    drop_duplicates: str
-        Whether duplicates in the datset should be dropped or not.
-        This is transformed in bool, but is expected as str due to cli.
-
     """
-    assert drop_duplicates in ['true', 'false']
-    drop_duplicates = True if drop_duplicates == 'true' else False
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 

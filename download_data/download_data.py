@@ -9,24 +9,12 @@ logging.basicConfig(level=logging.INFO)
 
 
 @click.command()
-@click.option('--name')
-@click.option('--url')
-@click.option('--out-dir')
+@click.option('--name', required=True, help="Name of the csv file on local disk, without '.csv' suffix.")
+@click.option('--url', required=True, help="remote url of the csv file.")
+@click.option('--out-dir', required=True, help="directory where file should be saved to.")
 def download_data(name, url, out_dir):
-    """Download a csv file and save it to local disk.
-
-    Parameters
-    ----------
-    name: str
-        name of the csv file on local disk, without '.csv' suffix.
-    url: str
-        remote url of the csv file.
-    out_dir:
-        directory where file should be saved to.
-
-    Returns
-    -------
-    None
+    """
+    Download a csv file and save it to local disk.
     """
     log = logging.getLogger('download-data')
     assert '.csv' not in name, f'Received {name}! ' \

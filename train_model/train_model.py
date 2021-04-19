@@ -12,19 +12,12 @@ logger = logging.getLogger('train-model')
 
 
 @click.command()
-@click.option('--train-set-path')
-@click.option('--model-out-file')
+@click.option('--train-set-path', required=True, help='Path to the train set csv file')
+@click.option('--model-out-file', required=True, help='Path where the model file will be saved')
 def train_model(train_set_path, model_out_file):
     """
     Train the wine predictor, with parameters discovered in hyper-parameter
     tuning phase. The model is then saved for future use.
-
-    Parameters
-    ----------
-    train_set_path: str
-        Path to the train set csv file
-    model_out_file: str
-        Path where the model file will be saved
     """
 
     assert '.csv' in train_set_path, f'Received {train_set_path}! ' \
@@ -57,7 +50,4 @@ def train_model(train_set_path, model_out_file):
 
 
 if __name__ == '__main__':
-    # train_model(
-    #     '/home/alberto/PycharmProjects/code-challenge-2020/data_root/processed/train.csv',
-    #     '/home/alberto/PycharmProjects/code-challenge-2020/data_root/models/xgbr.model')
     train_model()

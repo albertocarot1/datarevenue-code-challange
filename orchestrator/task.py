@@ -63,7 +63,7 @@ class MakeDatasets(DockerTask):
     in_csv = luigi.Parameter(default="/usr/share/data/raw/wine_dataset.csv")
     test_percentage = luigi.Parameter(default="20")
     out_dir = luigi.Parameter(default="/usr/share/data/processed/")
-    drop_duplicates = luigi.Parameter(default='true')
+    drop_duplicates = luigi.Parameter(default='--drop-duplicates')
 
     @property
     def image(self):
@@ -81,7 +81,7 @@ class MakeDatasets(DockerTask):
             '--in-csv', self.in_csv,
             '--test-perc', self.test_percentage,
             '--out-dir', self.out_dir,
-            '--drop-duplicates', self.drop_duplicates
+            self.drop_duplicates
         ]
 
     def output(self):

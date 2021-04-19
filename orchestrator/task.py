@@ -123,36 +123,33 @@ class TrainModel(DockerTask):
         return luigi.LocalTarget(
             path=str(Path(self.model_out_file))
         )
-#
-# class EvaluateModel(DockerTask):
-#     # TODO execute here click script that evaluates the model, and creates
-#     # a report through notebooks. Write in README documentation where the report
-#     # will be found
-#     in_csv = luigi.Parameter()
-#     test_percentage = luigi.Parameter(default=30)
-#     out_dir = luigi.Parameter(default="/usr/share/data/split/")
-#
-#
-#     @property
-#     def image(self):
-#         return f'code-challenge/make-dataset:{VERSION}'
-#
-#     def requires(self):
-#         self.in_csv = DownloadData()
-#         return self.in_csv
-#
-#     @property
-#     def command(self):
-#         # TODO: implement correct command
-#         # Try to get the input path from self.requires() ;)
-#         return [
-#             'python', 'dataset.py',
-#             '--in-csv', self.in_csv,
-#             '--test-perc', self.test_percentage,
-#             '--out-dir', self.out_dir
-#         ]
-#
-#     def output(self):
-#         return luigi.LocalTarget(
-#             path=str(Path(self.out_dir) / '.SUCCESS')
-#         )
+
+
+class EvaluateModel(DockerTask):
+    # evaluates the model, and creates a report notebooks HTML export file.
+    # Write in README documentation where the report will be found
+    test_set_path = luigi.Parameter(default="/usr/share/data/processed/test.csv")
+    model_file = luigi.Parameter(default="/usr/share/data/models/xgbr.model")
+
+
+    @property
+    def image(self):
+        return f'code-challenge/evaluate-model:{VERSION}'
+
+    def requires(self):
+        completed_task = TrainModel()
+        self.model_file = completed_task.output()
+        return completed_task
+
+    @property
+    def command(self):
+        return [
+            'python', 'evaluate_model.py',
+            '--test-set-path', self.test_set_path,
+            '--model-file', self.model_file,
+        ]
+
+    def output(self):
+        return luigi.LocalTarget(
+            path=str(Path(self.out_dir) / '.SUCCESS')
+        )

@@ -1,23 +1,15 @@
 [tool.poetry]
-name = "code-challenge-2020"
+name = "evaluate_model"
 version = "0.1.0"
-description = "Code challenge for Data Revenue interview"
+description = ""
 authors = ["albertocarot1 <acaroli1990@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-click = "^7.1.2"
-docker = "^5.0.0"
-luigi = "^3.0.3"
-dask = "^2021.4.0"
-jupyterlab = "^3.0.14"
+xgboost = "^1.4.0"
+pandas = "^1.2.4"
 scikit-learn = "^0.24.1"
 seaborn = "^0.11.1"
-distributed = "^2021.4.0"
-category-encoders = "^2.2.2"
-xgboost = "^1.4.0"
-psutil = "^5.8.0"
-graphviz = "^0.16"
 shap = "^0.39.0"
 
 [tool.poetry.dev-dependencies]

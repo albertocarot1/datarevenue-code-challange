@@ -14,6 +14,8 @@ ENV PATH $PATH:/root/.poetry/bin
 
 # Copy local code to container image
 COPY . /opt/make_dataset/
+
+# Copy poetry files for docker caching (python environment is re-installed only if they change
 COPY pyproject.toml poetry.lock /opt/make_dataset/
 WORKDIR /opt/make_dataset/
 

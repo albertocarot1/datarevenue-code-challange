@@ -14,6 +14,8 @@ ENV PATH $PATH:/root/.poetry/bin
 
 # Copy local code to container image
 COPY . /opt/train_model/
+
+# Copy poetry files for docker caching (python environment is re-installed only if they change
 COPY pyproject.toml poetry.lock /opt/train_model/
 WORKDIR /opt/train_model/
 

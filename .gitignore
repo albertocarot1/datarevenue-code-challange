@@ -28,3 +28,4 @@ data_root/**/*.parquet
 /evaluate_model/.python-version
 /notebooks/arguments.py
 /notebooks/EvaluateModel.html
+/data_root/report/EvaluateModel.html

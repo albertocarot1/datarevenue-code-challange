@@ -1,5 +1,14 @@
 # Code challenge Data Revenue
 
+In this project an automated pipeline for the creation and evaluation of a machine
+learning model is created. The problem solved is the prediction of the score of a wine.
+The pipeline is divided into four steps, concatenated sequentially through the library `luigi`:
+1. DownloadData
+2. Make(Train|Test)Dataset
+3. TrainModel
+4. EvaluateModel
+
+Each step has its own folder, Dockerfile and poetry environment.
 
 ## Local environment
 
@@ -31,5 +40,6 @@ Now to execute the pipeline simply run:
 
     docker-compose up orchestrator
 
-This will download the data, preprocess it, train the model, and create the evaluation report in TODO. 
+This will download the data, preprocess it, train the model, and create the evaluation report the folder
+report, under data_root. 
 

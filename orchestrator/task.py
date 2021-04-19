@@ -126,8 +126,9 @@ class TrainModel(DockerTask):
 
 
 class EvaluateModel(DockerTask):
-    # evaluates the model, and creates a report notebooks HTML export file.
-    # Write in README documentation where the report will be found
+    """
+    Evaluates the model, and creates a report notebooks HTML export file.
+    """
     test_set_path = luigi.Parameter(default="/usr/share/data/processed/test.csv")
     model_file = luigi.Parameter(default="/usr/share/data/models/xgbr.model")
     report_dir = luigi.Parameter(default="/usr/share/data/report/")

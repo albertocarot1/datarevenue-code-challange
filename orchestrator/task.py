@@ -130,6 +130,7 @@ class EvaluateModel(DockerTask):
     # Write in README documentation where the report will be found
     test_set_path = luigi.Parameter(default="/usr/share/data/processed/test.csv")
     model_file = luigi.Parameter(default="/usr/share/data/models/xgbr.model")
+    report_dir = luigi.Parameter(default="/usr/share/data/report/")
 
 
     @property
@@ -138,7 +139,7 @@ class EvaluateModel(DockerTask):
 
     def requires(self):
         completed_task = TrainModel()
-        self.model_file = completed_task.output()
+        self.model_file = completed_task.output().path
         return completed_task
 
     @property
@@ -147,9 +148,10 @@ class EvaluateModel(DockerTask):
             'python', 'evaluate_model.py',
             '--test-set-path', self.test_set_path,
             '--model-file', self.model_file,
+            '--report-dir', self.report_dir
         ]
 
     def output(self):
         return luigi.LocalTarget(
-            path=str(Path(self.out_dir) / '.SUCCESS')
+            path=str(Path(self.report_dir) / 'EvaluateModel.html')
         )

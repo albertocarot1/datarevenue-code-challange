@@ -1,35 +1,21 @@
-FROM ubuntu:20.04
+FROM debian:buster-slim
 
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+RUN apt-get install -y mecab-ipadic-utf8
 
-RUN apt-get update && \
-    apt-get install -qy software-properties-common && \
-    add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
-    apt-get install -qy curl build-essential python3.8 python3.8-dev
+ENV HOME="/root"
 
-# Needed for shap library
-RUN apt-get install -y python3-pip
+WORKDIR $HOME
+RUN apt-get install -y git
+RUN git clone --depth=1 https://github.com/pyenv/pyenv.git .pyenv
 
-# Install production dependencies.
-RUN pip3 install --upgrade setuptools pip
-ENV POETRY_VERSION 1.1.6
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3.8
-RUN exec bash && source $HOME/.poetry/env
-ENV PATH $PATH:/root/.poetry/bin
+ENV PYENV_ROOT="$HOME/.pyenv"
+ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+RUN pyenv install 3.8-dev
+RUN pyenv global 3.8-dev
 
-# Copy local code to container image
 COPY . /opt/evaluate_model/
+RUN pip install -r /opt/evaluate_model/requirements.txt
 
-# Copy poetry files for docker caching (python environment is re-installed only if they change
-COPY pyproject.toml poetry.lock /opt/evaluate_model/
 WORKDIR /opt/evaluate_model/
-
-RUN alias python=python3.8
-RUN poetry config virtualenvs.create false \
-                && poetry export --without-hashes -f requirements.txt --dev \
-                |  poetry run pip3 install -r /dev/stdin \
-                && poetry debug
-
-RUN poetry install -v --no-root -n

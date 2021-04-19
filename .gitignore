@@ -24,3 +24,7 @@ data_root/**/*.parquet
 # local pyenv python version
 /.python-version
 /notebooks/test.py
+/notebooks/gs_xgbr.pkl
+/evaluate_model/.python-version
+/notebooks/arguments.py
+/notebooks/EvaluateModel.html

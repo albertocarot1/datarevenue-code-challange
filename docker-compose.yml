@@ -40,5 +40,4 @@ services:
       - ./orchestrator:/opt/orchestrator # Mount code for faster development
     build:
       context: ./orchestrator
-    # TODO: Eventually replace with EvaluateModel task
-    command: luigi --module task TrainModel --scheduler-host luigid #--workers 4
+    command: luigi --module task EvaluateModel --scheduler-host luigid
